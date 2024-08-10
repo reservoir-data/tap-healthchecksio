@@ -7,9 +7,6 @@ import typing as t
 from singer_sdk import RESTStream
 from singer_sdk.authenticators import APIKeyAuthenticator
 
-if t.TYPE_CHECKING:
-    from singer_sdk.helpers.types import Context
-
 
 class HealthchecksIOStream(RESTStream[t.Any]):
     """Healthchecks.io stream class."""
