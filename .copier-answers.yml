@@ -1,0 +1,24 @@
+# Changes here will be overwritten by Copier
+_commit: v0.2.2
+_src_path: gh:edgarrmondragon/singer-tap-copier-template
+author_email: edgarrmondragon@hey.com
+author_fullname: Edgar Ramírez-Mondragón
+author_username: edgarrmondragon
+dependabot_update_time: '10:00'
+dependabot_update_timezone: Etc/UTC
+python_main_version: '3.12'
+repository_name: tap-healthchecksio
+repository_namespace: reservoir-data
+repository_provider: github.com
+repository_visibility: public
+tap_auth_method: API Key
+tap_id: tap-healthchecksio
+tap_package_command_line_name: tap-healthchecksio
+tap_package_distribution_name: tap-healthchecksio
+tap_package_import_name: tap_healthchecksio
+tap_source_description: Online service for monitoring regularly running tasks such
+    as cron jobs
+tap_source_id: HealthchecksIO
+tap_source_name: Healthchecks.io
+tap_stream_type: REST
+vscode_files: true
