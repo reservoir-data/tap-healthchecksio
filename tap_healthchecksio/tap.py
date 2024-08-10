@@ -28,4 +28,4 @@ class TapHealthchecksIO(Tap):
         Returns:
             A list of Healthchecks.io streams.
         """
-        return [streams.Checks(tap=self)]
+        return [streams.Checks(tap=self), streams.Flips(tap=self)]

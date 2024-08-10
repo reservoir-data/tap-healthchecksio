@@ -2,9 +2,14 @@
 
 from __future__ import annotations
 
+import typing as t
+
 from singer_sdk import typing as th
 
 from tap_healthchecksio.client import HealthchecksIOStream
+
+if t.TYPE_CHECKING:
+    from singer_sdk.helpers.types import Context
 
 
 class Checks(HealthchecksIOStream):
@@ -37,4 +42,30 @@ class Checks(HealthchecksIOStream):
         th.Property("filter_subject", th.BooleanType),
         th.Property("filter_body", th.BooleanType),
         th.Property("timeout", th.IntegerType),
+    ).to_dict()
+
+    def generate_child_contexts(
+        self,
+        record: dict[str, t.Any],
+        context: Context | None,  # noqa: ARG002
+    ) -> t.Iterable[Context | None]:
+        """Generate child contexts for the record."""
+        yield {"unique_key": record["unique_key"]}
+
+
+class Flips(HealthchecksIOStream):
+    """Flips stream."""
+
+    name = "flips"
+    path = "/v3/checks/{unique_key}/flips/"
+    primary_keys = ("unique_key", "timestamp")
+    replication_key = None
+
+    parent_stream_type = Checks
+    records_jsonpath = "$.flips[*]"
+
+    schema = th.PropertiesList(
+        th.Property("unique_key", th.StringType),
+        th.Property("timestamp", th.StringType),
+        th.Property("up", th.IntegerType),
     ).to_dict()
