@@ -123,4 +123,6 @@ module = [
 ]
 
 [tool.uv]
+prerelease = "allow"
+preview = true
 required-version = ">=0.5.19"
