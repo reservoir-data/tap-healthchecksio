@@ -11,7 +11,7 @@ plugins:
     label: Healthchecks.io
     namespace: healthchecksio
     description: Online service for monitoring regularly running tasks such as cron jobs
-    repository: https://github.com/reservoir-data/tap-healthchecksio
+    repo: https://github.com/reservoir-data/tap-healthchecksio
     docs: https://github.com/reservoir-data/tap-healthchecksio#readme
     pip_url: -e .
     capabilities:
