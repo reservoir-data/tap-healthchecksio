@@ -35,7 +35,7 @@ dynamic = [
   "version",
 ]
 dependencies = [
-  "singer-sdk~=0.45.3",
+  "singer-sdk~=0.46.3",
 ]
 urls.Documentation = "https://github.com/reservoir-data/tap-healthchecksio#readme"
 urls.Homepage = "https://github.com/reservoir-data/tap-healthchecksio"
