@@ -20,11 +20,9 @@ class HealthchecksIOStream(RESTStream[t.Any]):
         Returns:
             The authenticator instance for this REST stream.
         """
-        api_key: str = self.config["api_key"]
-        return APIKeyAuthenticator.create_for_stream(
-            self,
+        return APIKeyAuthenticator(
             key="x-api-key",
-            value=api_key,
+            value=self.config["api_key"],
             location="header",
         )
 
