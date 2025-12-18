@@ -1,16 +1,48 @@
-# `tap-healthchecksio`
+<div align="center">
+
+# tap-healthchecksio
+
+<div>
+  <a href="https://github.com/reservoir-data/tap-healthchecksio/blob/main/LICENSE">
+    <img alt="License" src="https://img.shields.io/github/license/reservoir-data/tap-healthchecksio"/>
+  </a>
+  <a href="https://results.pre-commit.ci/latest/github/reservoir-data/tap-healthchecksio/main">
+    <img alt="pre-commit.ci status" src="https://results.pre-commit.ci/badge/github/reservoir-data/tap-healthchecksio/main.svg"/>
+  </a>
+  <a href="https://scientific-python.org/specs/spec-0000/">
+    <img alt="SPEC 0 — Minimum Supported Dependencies" src="https://img.shields.io/badge/SPEC-0-green"/>
+  </a>
+  <a href="https://github.com/astral-sh/ruff">
+    <img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json" alt="Ruff" style="max-width:100%;">
+  </a>
+  <a href="https://github.com/astral-sh/uv">
+   <img alt="uv" src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/uv/main/assets/badge/v0.json"/>
+  </a>
+</div>
 
 Singer tap for Healthchecks.io.
 
 Built with the [Meltano Tap SDK](https://sdk.meltano.com) for Singer Taps.
 
+</div>
+
 ## Capabilities
 
-* `catalog`
-* `state`
-* `discover`
-* `about`
-* `stream-maps`
+- `catalog`
+- `state`
+- `discover`
+- `activate-version`
+- `about`
+- `stream-maps`
+- `schema-flattening`
+- `batch`
+- `structured-logging`
+
+## Supported Python Versions
+
+- 3.12
+- 3.13
+- 3.14
 
 ## Settings
 

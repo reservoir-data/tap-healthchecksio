@@ -10,7 +10,6 @@ on:
     - uv.lock
     - .github/workflows/test.yml
   pull_request:
-    types: [opened, synchronize, reopened]
     paths:
     - tap_healthchecksio/**
     - tests/**
@@ -21,6 +20,10 @@ on:
   schedule:
   # Run weekly on Monday at 12:00 PM UTC
   - cron: "0 12 * * 1"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 env:
   FORCE_COLOR: "1"
@@ -42,11 +45,6 @@ jobs:
         - "3.14"
         - "3.13"
         - "3.12"
-        - "3.11"
-        - "3.10"
-        include:
-        - { environment: "dependencies", python-version: "3.x" }
-        - { environment: "typing",       python-version: "3.x" }
 
     steps:
     - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
@@ -63,5 +61,25 @@ jobs:
         UV_PYTHON: ${{ steps.setup-python.outputs.python-path }}
         TAP_HEALTHCHECKSIO_API_KEY: ${{ secrets.TAP_HEALTHCHECKSIO_API_KEY }}
         TAP_HEALTHCHECKSIO_START_DATE: ${{ secrets.TAP_HEALTHCHECKSIO_START_DATE }}
-      run: |
-        uvx --with tox-uv==${{ env.TOX_UV_VERSION }} --with tox==${{ env.TOX_VERSION }} tox -e ${{ matrix.environment || matrix.python-version }}
+      run: >
+        uvx
+        --with tox-uv==${{ env.TOX_UV_VERSION }}
+        --with tox==${{ env.TOX_VERSION }}
+        tox -e ${{ matrix.python-version }}
+
+  lint:
+    runs-on: ubuntu-24.04
+    steps:
+    - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+    - uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548 # v6.1.0
+      id: setup-python
+    - uses: astral-sh/setup-uv@1e862dfacbd1d6d858c55d9b792c756523627244 # v7.1.4
+      with:
+        version: ${{ env.UV_VERSION }}
+    - env:
+        UV_PYTHON: ${{ steps.setup-python.outputs.python-path }}
+      run: uv tool install --with tox-uv==${{ env.TOX_UV_VERSION }} --from tox==${{ env.TOX_VERSION }} tox
+    - name: Static type checking
+      run: tox -e typing
+    - name: Unused, missing and transitive dependencies
+      run: tox -e dependencies
