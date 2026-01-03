@@ -51,7 +51,9 @@ testing = [
 ]
 typing = [
   "mypy~=1.19.0",
+  "ty>=0.0.8",
   "types-requests~=2.31",
+  { include-group = "testing" },
 ]
 
 [tool.hatch.version]
@@ -136,6 +138,14 @@ commands = [
   [
     "mypy",
     "--strict",
+    { replace = "posargs", default = [
+      "tap_healthchecksio",
+      "tests",
+    ], extend = true },
+  ],
+  [
+    "ty",
+    "check",
     { replace = "posargs", default = [
       "tap_healthchecksio",
       "tests",
