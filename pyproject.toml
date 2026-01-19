@@ -14,7 +14,7 @@ keywords = [
   "Healthchecks.io",
   "singer.io",
 ]
-license.file = "LICENSE"
+license = "Apache-2.0"
 maintainers = [
   { name = "Edgar Ramírez-Mondragón", email = "edgarrmondragon@hey.com" },
 ]
@@ -46,13 +46,13 @@ dev = [
 ]
 testing = [
   "deptry>=0.12",
-  "pytest>=8",
+  "pytest>=9",
   "singer-sdk[testing]",
 ]
 typing = [
   "mypy~=1.19.0",
   "ty>=0.0.8",
-  "types-requests~=2.31",
+  "types-requests~=2.32",
   { include-group = "testing" },
 ]
 
@@ -62,7 +62,7 @@ source = "vcs"
 [tool.uv]
 prerelease = "allow"
 preview = true
-required-version = ">=0.5.19"
+required-version = ">=0.9.17"
 
 [tool.ruff]
 line-length = 88
@@ -109,11 +109,22 @@ DEP002 = [
 [tool.pyproject-fmt]
 max_supported_python = "3.14"
 
-[tool.pytest.ini_options]
-addopts = "-vvv --durations=10"
+[tool.pytest]
+addopts = [
+  "-vvv",
+  "--durations=10",
+  "-ra",
+  "--strict-config",
+  "--strict-markers",
+]
+filterwarnings = [ "error" ]
+log_level = "INFO"
+minversion = "9"
+testpaths = [ "tests" ]
+xfail_strict = true
 
 [tool.tox]
-min_version = "4.22"
+min_version = "4.32"
 env_list = [
   "dependencies",
   "typing",
@@ -137,7 +148,6 @@ dependency_groups = [ "testing", "typing" ]
 commands = [
   [
     "mypy",
-    "--strict",
     { replace = "posargs", default = [
       "tap_healthchecksio",
       "tests",
@@ -154,6 +164,8 @@ commands = [
 ]
 
 [tool.mypy]
+enable_error_code = [ "ignore-without-code", "redundant-expr", "truthy-bool" ]
+strict = true
 warn_redundant_casts = true
 warn_return_any = true
 warn_no_return = true
