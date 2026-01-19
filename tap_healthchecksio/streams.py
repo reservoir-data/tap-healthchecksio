@@ -2,13 +2,15 @@
 
 from __future__ import annotations
 
-import typing as t
+from typing import TYPE_CHECKING, Any, override
 
 from singer_sdk import typing as th
 
 from tap_healthchecksio.client import HealthchecksIOStream
 
-if t.TYPE_CHECKING:
+if TYPE_CHECKING:
+    from collections.abc import Iterable
+
     from singer_sdk.helpers.types import Context
 
 
@@ -44,11 +46,12 @@ class Checks(HealthchecksIOStream):
         th.Property("timeout", th.IntegerType),
     ).to_dict()
 
+    @override
     def generate_child_contexts(
         self,
-        record: dict[str, t.Any],
-        context: Context | None,  # noqa: ARG002
-    ) -> t.Iterable[Context | None]:
+        record: dict[str, Any],
+        context: Context | None,
+    ) -> Iterable[Context | None]:
         """Generate child contexts for the record."""
         yield {"unique_key": record["unique_key"]}
 

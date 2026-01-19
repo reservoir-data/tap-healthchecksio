@@ -36,6 +36,7 @@ env:
 
 jobs:
   test:
+    name: Integration tests
     runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
@@ -60,7 +61,6 @@ jobs:
       env:
         UV_PYTHON: ${{ steps.setup-python.outputs.python-path }}
         TAP_HEALTHCHECKSIO_API_KEY: ${{ secrets.TAP_HEALTHCHECKSIO_API_KEY }}
-        TAP_HEALTHCHECKSIO_START_DATE: ${{ secrets.TAP_HEALTHCHECKSIO_START_DATE }}
       run: >
         uvx
         --with tox-uv==${{ env.TOX_UV_VERSION }}
@@ -68,6 +68,7 @@ jobs:
         tox -e ${{ matrix.python-version }}
 
   lint:
+    name: Static type checking and unused dependencies
     runs-on: ubuntu-24.04
     steps:
     - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1

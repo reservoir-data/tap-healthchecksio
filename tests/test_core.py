@@ -14,6 +14,6 @@ TestTapHealthchecksIO = get_tap_test_class(
     TapHealthchecksIO,
     config=SAMPLE_CONFIG,
     suite_config=SuiteConfig(
-        max_records_limit=25,
+        max_records_limit=150,
     ),
 )
