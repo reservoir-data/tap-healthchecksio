@@ -56,13 +56,13 @@ typing = [
   { include-group = "testing" },
 ]
 
-[tool.hatch.version]
-source = "vcs"
+[tool.hatch]
+version.source = "vcs"
 
 [tool.uv]
+required-version = ">=0.9.17"
 prerelease = "allow"
 preview = true
-required-version = ">=0.9.17"
 
 [tool.ruff]
 line-length = 88
@@ -93,14 +93,12 @@ lint.isort.required-imports = [
 ]
 lint.pydocstyle.convention = "google"
 
-[tool.deptry.package_module_name_map]
-mypy = "mypy"
-pytest = "pytest"
-tap-healthchecksio = "tap_healthchecksio"
-types-requests = "requests"
-
-[tool.deptry.per_rule_ignores]
-DEP002 = [
+[tool.deptry]
+package_module_name_map.mypy = "mypy"
+package_module_name_map.pytest = "pytest"
+package_module_name_map.tap-healthchecksio = "tap_healthchecksio"
+package_module_name_map.types-requests = "requests"
+per_rule_ignores.DEP002 = [
   "deptry",
   "mypy",
   "pytest",
@@ -132,14 +130,10 @@ env_list = [
   "3.13",
   "3.12",
 ]
-
-[tool.tox.env.dependencies]
-dependency_groups = [ "testing" ]
-commands = [ [ "deptry", "." ] ]
-
-[tool.tox.env.typing]
-dependency_groups = [ "testing", "typing" ]
-commands = [
+env.dependencies.dependency_groups = [ "testing" ]
+env.dependencies.commands = [ [ "deptry", "." ] ]
+env.typing.dependency_groups = [ "testing", "typing" ]
+env.typing.commands = [
   [
     "mypy",
     { replace = "posargs", default = [
@@ -156,12 +150,10 @@ commands = [
     ], extend = true },
   ],
 ]
-
-[tool.tox.env_run_base]
-runner = "uv-venv-lock-runner"
-pass_env = [ "TAP_HEALTHCHECKSIO_*" ]
-dependency_groups = [ "testing" ]
-commands = [ [ "pytest", { replace = "posargs", default = [ "tests" ], extend = true } ] ]
+env_run_base.runner = "uv-venv-lock-runner"
+env_run_base.pass_env = [ "TAP_HEALTHCHECKSIO_*" ]
+env_run_base.dependency_groups = [ "testing" ]
+env_run_base.commands = [ [ "pytest", { replace = "posargs", default = [ "tests" ], extend = true } ] ]
 
 [tool.mypy]
 enable_error_code = [ "ignore-without-code", "redundant-expr", "truthy-bool" ]
