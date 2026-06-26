@@ -2,7 +2,7 @@
 build-backend = "hatchling.build"
 requires = [
   "hatch-vcs==0.5",
-  "hatchling==1.29",
+  "hatchling==1.30.1",
 ]
 
 [project]
@@ -15,12 +15,6 @@ keywords = [
   "singer.io",
 ]
 license = "Apache-2.0"
-maintainers = [
-  { name = "Edgar Ramírez-Mondragón", email = "edgarrm358@gmail.com" },
-]
-authors = [
-  { name = "Edgar Ramírez-Mondragón", email = "edgarrm358@gmail.com" },
-]
 requires-python = ">=3.12"
 classifiers = [
   "Programming Language :: Python :: 3 :: Only",
@@ -32,80 +26,72 @@ dynamic = [
   "version",
 ]
 dependencies = [
-  "singer-sdk~=0.54.0a4",
+  "singer-sdk~=0.54.5",
 ]
-urls.Documentation = "https://github.com/reservoir-data/tap-healthchecksio#readme"
-urls.Homepage = "https://github.com/reservoir-data/tap-healthchecksio"
-urls.Repository = "https://github.com/reservoir-data/tap-healthchecksio"
-scripts.tap-healthchecksio = "tap_healthchecksio.tap:TapHealthchecksIO.cli"
+[[project.authors]]
+name = "Edgar Ramírez-Mondragón"
+email = "edgarrm358@gmail.com"
+[[project.maintainers]]
+name = "Edgar Ramírez-Mondragón"
+email = "edgarrm358@gmail.com"
+[project.scripts]
+tap-healthchecksio = "tap_healthchecksio.tap:TapHealthchecksIO.cli"
+[project.urls]
+Documentation = "https://github.com/reservoir-data/tap-healthchecksio#readme"
+Homepage = "https://github.com/reservoir-data/tap-healthchecksio"
+Repository = "https://github.com/reservoir-data/tap-healthchecksio"
 
 [dependency-groups]
 dev = [
+  "deptry>=0.25",
   { include-group = "testing" },
   { include-group = "typing" },
 ]
 testing = [
-  "deptry>=0.12",
   "pytest>=9",
   "singer-sdk[testing]",
 ]
 typing = [
-  "mypy~=2.1.0",
-  "ty>=0.0.8",
-  "types-requests~=2.32",
+  "mypy~=2.1",
+  "ty>=0.0.50",
   { include-group = "testing" },
 ]
 
 [tool.hatch]
-version.source = "vcs"
+[tool.hatch.version]
+source = "vcs"
 
 [tool.uv]
-required-version = ">=0.9.17"
+required-version = ">=0.11"
 prerelease = "allow"
 preview = true
 
 [tool.ruff]
 line-length = 88
-lint.select = [
+[tool.ruff.lint]
+select = [
   "ALL",
 ]
-lint.ignore = [
+ignore = [
   "COM812", # missing-trailing-comma
   "DJ",     # flake8-django
   "FIX002", # line-contains-todo
   "ISC001", # single-line-implicit-string-concatenation
   "PD",     # pandas-vet
 ]
-lint.per-file-ignores."tests/*" = [
+per-file-ignores."tests/*" = [
   "ANN201", # missing-return-type-public-function
   "S101",   # assert
   "SLF001", # private-member-access
 ]
-lint.unfixable = [
+unfixable = [
   "ERA001", # commented-out-code
 ]
-lint.flake8-annotations.allow-star-arg-any = true
-lint.isort.known-first-party = [
-  "tap_healthchecksio",
-]
-lint.isort.required-imports = [
-  "from __future__ import annotations",
-]
-lint.pydocstyle.convention = "google"
-
-[tool.deptry]
-per_rule_ignores.DEP002 = [
-  "deptry",
-  "mypy",
-  "pytest",
-]
-package_module_name_map.mypy = "mypy"
-package_module_name_map.pytest = "pytest"
-package_module_name_map.tap-healthchecksio = "tap_healthchecksio"
-package_module_name_map.types-requests = "requests"
+flake8-annotations.allow-star-arg-any = true
+pydocstyle.convention = "google"
 
 [tool.pyproject-fmt]
-max_supported_python = "3.14"
+table_format = "long"
 
 [tool.mypy]
 warn_redundant_casts = true
@@ -119,30 +105,32 @@ warn_unused_configs = true
 
 [tool.pytest]
 addopts = [
-  "-vvv",
+  "-v",
   "--durations=10",
   "-ra",
-  "--strict-config",
-  "--strict-markers",
 ]
 filterwarnings = [ "error" ]
 log_level = "INFO"
 minversion = "9"
+strict = true
 testpaths = [ "tests" ]
-xfail_strict = true
 
 [tool.tox]
-min_version = "4.32"
+requires = [
+  "tox>=4.55",
+  "tox-uv>=1.35",
+]
 env_list = [
-  "3.14",
-  "3.13",
-  "3.12",
   "dependencies",
   "typing",
+  { prefix = "3.", start = 12 },
 ]
-env.dependencies.commands = [ [ "deptry", "." ] ]
-env.dependencies.dependency_groups = [ "testing" ]
-env.typing.commands = [
+[tool.tox.env.dependencies]
+dependency_groups = [ "dev" ]
+commands = [ [ "deptry", "." ] ]
+[tool.tox.env.typing]
+dependency_groups = [ "testing", "typing" ]
+commands = [
   [
     "mypy",
     { replace = "posargs", default = [
@@ -159,8 +147,8 @@ env.typing.commands = [
     ], extend = true },
   ],
 ]
-env.typing.dependency_groups = [ "testing", "typing" ]
-env_run_base.commands = [ [ "pytest", { replace = "posargs", default = [ "tests" ], extend = true } ] ]
-env_run_base.dependency_groups = [ "testing" ]
-env_run_base.pass_env = [ "TAP_HEALTHCHECKSIO_*" ]
-env_run_base.runner = "uv-venv-lock-runner"
+[tool.tox.env_run_base]
+runner = "uv-venv-lock-runner"
+dependency_groups = [ "testing" ]
+pass_env = [ "TAP_HEALTHCHECKSIO_*" ]
+commands = [ [ "pytest", { replace = "posargs", default = [ "tests" ], extend = true } ] ]
