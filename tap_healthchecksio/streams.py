@@ -1,3 +1,5 @@
+# Copyright (c) 2026 Edgar-Ramírez Mondragón
+
 """Stream type classes for tap-healthchecksio."""
 
 from __future__ import annotations
@@ -52,7 +54,11 @@ class Checks(HealthchecksIOStream):
         record: dict[str, Any],
         context: Context | None,
     ) -> Iterable[Context | None]:
-        """Generate child contexts for the record."""
+        """Generate child contexts for the record.
+
+        Yields:
+            A single child context with the unique key of the record.
+        """
         yield {"unique_key": record["unique_key"]}
 
 

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 Edgar-Ramírez Mondragón
+
 """Healthchecks.io tap class."""
 
 from __future__ import annotations
